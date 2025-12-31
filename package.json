@@ -9,6 +9,24 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.6"
-  }
+  },
+  "description": "Pagina web basada en el curso de Platzi",
+  "main": "index.js",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SantinoG07/Mokepon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SantinoG07/Mokepon/issues"
+  },
+  "homepage": "https://github.com/SantinoG07/Mokepon#readme"
 }
