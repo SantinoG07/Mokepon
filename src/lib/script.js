@@ -1,19 +1,21 @@
 
 function prueba(){
+let confirmarselec = document.getElementById('button-confirmar')
 let cardmokepon
 let Mokepones = []
 class Mokepon {
-    constructor(vida, nombre, foto) {
+    constructor(vida, nombre, foto, descripcion) {
         this.vida = vida
         this.foto = foto
         this.nombre = nombre
         this.ataques = []
+        this.descripcion = descripcion
     }
 }
 
-let ratigueya = new Mokepon(5, 'Ratigueya', '/ratigueya.png')
-let hipodoge = new Mokepon(5, 'Hipodoge', '/hipodoge.png')
-let capipepo = new Mokepon(5, 'Capipepo', '/capipepo.png')
+let ratigueya = new Mokepon(5, 'Ratigueya', '/ratigueya.png', 'Aca va la pequeña descripcion')
+let hipodoge = new Mokepon(5, 'Hipodoge', '/hipodoge.png', 'Aca va la pequeña descripcion')
+let capipepo = new Mokepon(5, 'Capipepo', '/capipepo.png', 'Aca va la pequeña descripcion')
 
 ratigueya.ataques.push(
     { nombre: '💧', id: 'boton-agua' },
@@ -40,7 +42,6 @@ capipepo.ataques.push(
 Mokepones.push(ratigueya, hipodoge, capipepo)
 
 let opcionesmasc = document.getElementById('opc-mascotas')
-inicializarjuego()
 
 
 function inicializarjuego(){
@@ -48,10 +49,10 @@ function inicializarjuego(){
         cardmokepon = `
         <div class="bg-black w-70 h-100 rounded-2xl shadow-2xl flex flex-col">
         <label class='flex flex-1 flex-col'>
-        <input type="radio" class="hidden" id=${Mokepon.nombre}/>
+        <input type="radio" class="hidden"/>
             <img src="${Mokepon.foto}"/>
             <h1 class="text-white text-center mt-10">${Mokepon.nombre}</h1>
-            <h3 class='text-white m-4'>Su nombre es ratigueya, es uno de los mejores guerreros de la aldea</h3>
+            <h3 class='text-white m-4'>${Mokepon.descripcion}</h3>
             <p class="text-right pr-4 pb-4 mt-auto">${Mokepon.ataques.map(a => a.nombre).join(' ')}</p> 
 
             </label>
@@ -62,8 +63,17 @@ function inicializarjuego(){
         opcionesmasc.innerHTML+=cardmokepon
 
     })
+    
+    
+}
+inicializarjuego()
+confirmarselec.addEventListener('click',ocultar)
+
 }
 
+function ocultar(){
+    let sectionselec = document.getElementById('section-selec-masc')
+    sectionselec.style.display='none'
 }
 
 window.addEventListener('load', prueba)
