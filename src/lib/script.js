@@ -7,6 +7,9 @@ let ataques
 let ataquesB = []
 let ataquesBE = []
 let botones = []
+let historialjugador = 0
+let historialenemigo = 0 
+let empate=0
 
 //Obtencion de los elementos (Getters)
 let confirmarmasc = document.getElementById('button-confirmar-masc')
@@ -15,10 +18,14 @@ let sectioncombate = document.getElementById('section-combate')
 let divimagescombate = document.getElementById('div-images')
 let divvidas = document.getElementById('div-vidas')
 let divbuttons = document.getElementById('div-buttons')
+let divmensajes = document.getElementById('div-mensaje')
+let btnreiniciar = document.getElementById('btn-reiniciar')
 
 
 //Eventos de los getters
 confirmarmasc.addEventListener('click', confirmarseleccion)
+btnreiniciar.addEventListener('click', reiniciarjuego)
+
 
 
 
@@ -71,12 +78,12 @@ Mokepones.push(ratigueya, hipodoge, capipepo)
 
 
 function cargarjuego() {
-
     sectioncombate.style.display='none'
+    btnreiniciar.style.display='none'
 
     Mokepones.forEach((Mokepon) => {
         let cardmokepon = `
-        <label class='flex flex-1 flex-col bg-black rounded-2xl has-[input:checked]:bg-gray-500 transition-all duration-500' for=${Mokepon.nombre}>
+        <label class='flex flex-1 flex-col bg-black rounded-2xl has-[input:checked]:bg-gray-500 transition-all duration-500 cursor-pointer' for=${Mokepon.nombre}>
         <input type="radio" class="hidden peer" name="mokepones" id=${Mokepon.nombre} value=${Mokepon.nombre}/>
             <img src="${Mokepon.foto}"/>
             <h1 class="text-white text-center mt-10">${Mokepon.nombre}</h1>
@@ -146,20 +153,21 @@ function combate(nombre){
 
 function enfrentamiento(ataqueJugador){
     let ataqueEnemigo = aleatorio(0,ataquesBE.length-1)
-    console.log(ataquesBE[ataqueEnemigo].nombre)
-    console.log(ataqueJugador)
 
-    if(ataqueJugador == "agua" & ataquesBE[ataqueEnemigo].nombre == "🔥"){
+    if(ataqueJugador == "💧" & ataquesBE[ataqueEnemigo].nombre == "🔥"){
         console.log('ganaste')
-    }else if (ataqueJugador == "fuego" & ataquesBE[ataqueEnemigo].nombre == "🌱"){
+        mensajepelea('Ganado', ataqueJugador, ataquesBE[ataqueEnemigo].nombre)
+    }else if (ataqueJugador == "🔥" & ataquesBE[ataqueEnemigo].nombre == "🌱"){
         console.log('ganaste')
-    }else if (ataqueJugador == "tierra" & ataquesBE[ataqueEnemigo].nombre == "💧"){
+        mensajepelea('Ganado', ataqueJugador, ataquesBE[ataqueEnemigo].nombre)
+    }else if (ataqueJugador == "🌱" & ataquesBE[ataqueEnemigo].nombre == "💧"){
         console.log('ganaste')
+        mensajepelea('Ganado', ataqueJugador, ataquesBE[ataqueEnemigo].nombre)
     }else if(ataqueJugador == ataquesBE[ataqueEnemigo].nombre){
-        console.log('empate')
+        mensajepelea('Empatado', ataqueJugador, ataquesBE[ataqueEnemigo].nombre)
     }
     else {
-        console.log('perdiste')
+        mensajepelea('Perdido', ataqueJugador, ataquesBE[ataqueEnemigo].nombre)
     }
 }
 
@@ -172,18 +180,58 @@ function agregareventobotones(){
         if(e.target.textContent == "🔥"){
             boton.style.background = '#ffff'
             boton.disabled = true;
-            enfrentamiento('fuego')
+            enfrentamiento('🔥')
         }else if(e.target.textContent == "💧"){
-            enfrentamiento('agua')
+            enfrentamiento('💧')
             boton.style.background = '#ffff'
             boton.disabled = true;
         }else if(e.target.textContent == "🌱"){
-            enfrentamiento('tierra')
+            enfrentamiento('🌱')
             boton.style.background = '#ffff'
             boton.disabled = true;
         }
-        })
+        
+        if((historialjugador+historialenemigo+empate)==5){
+            console.log('llega')
+            if(historialenemigo>historialjugador){
+            mensajefinal('Perdido')
+            }else {
+            mensajefinal('Ganado')
+            }
+        }
     })
+    })
+}
+
+function mensajepelea(resultado, ataquejugador, ataquepc){
+    if(resultado == 'Ganado'){
+        historialjugador++;
+    }else if(resultado == 'Perdido'){
+        historialenemigo++;
+    }else {
+        empate++;
+    }
+    let mensajeresultado = `
+    <div class="flex flex-col align-center items-center m-10">
+    <h4 class="text-white pb-0 mb-0">Tu has elegido ${ataquejugador}, tu rival ha elegido ${ataquepc}</h4>
+
+    <h2 class="font-bold text-white mt-2">Has ${resultado}</h2>
+    </div>`
+
+    divmensajes.innerHTML += mensajeresultado
+}
+
+
+function mensajefinal(resultado){
+    let mensajeresultadofinal = `
+    
+    <div class="flex flex-col align-center items-center m-10">
+    <h2 class="font-bold text-white mt-2">Has ${resultado} la batalla!</h2>
+    </div>`
+
+    btnreiniciar.style.display = 'block'
+    divmensajes.innerHTML += mensajeresultadofinal
+
 }
 
 function cargarAtaques(mascotaJugador){
@@ -209,6 +257,11 @@ function selecmascenemigo(){
         mascenemigo = "Capipepo"
     }
 }
+
+function reiniciarjuego(){    
+    location.reload()
+}
+
 
 function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
