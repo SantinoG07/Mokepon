@@ -4,6 +4,9 @@ let inputcapipepo
 let inputhipodoge
 let mascenemigo
 let ataques
+let ataquesB = []
+let ataquesBE = []
+let botones = []
 
 //Obtencion de los elementos (Getters)
 let confirmarmasc = document.getElementById('button-confirmar-masc')
@@ -31,15 +34,15 @@ class Mokepon {
     }
 }
 
-let ratigueya = new Mokepon(5, 'Ratigueya', '/ratigueya.png', 'Aca va la pequeña descripcion')
-let hipodoge = new Mokepon(5, 'Hipodoge', '/hipodoge.png', 'Aca va la pequeña descripcion')
-let capipepo = new Mokepon(5, 'Capipepo', '/capipepo.png', 'Aca va la pequeña descripcion')
+let ratigueya = new Mokepon(5, 'Ratigueya', '/Ratigueya.png', 'Aca va la pequeña descripcion')
+let hipodoge = new Mokepon(5, 'Hipodoge', '/Hipodoge.png', 'Aca va la pequeña descripcion')
+let capipepo = new Mokepon(5, 'Capipepo', '/Capipepo.png', 'Aca va la pequeña descripcion')
 
 ratigueya.ataques.push(
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
+    { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '💧', id: 'boton-agua' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🌱', id: 'boton-tierra' }
 )
 hipodoge.ataques.push(
@@ -50,11 +53,11 @@ hipodoge.ataques.push(
     { nombre: '🌱', id: 'boton-tierra' }
 )
 capipepo.ataques.push(
+    { nombre: '🌱', id: 'boton-tierra' },
+    { nombre: '🌱', id: 'boton-tierra' },
+    { nombre: '🌱', id: 'boton-tierra' },
     { nombre: '💧', id: 'boton-agua' },
-    { nombre: '🌱', id: 'boton-tierra' },
-    { nombre: '🌱', id: 'boton-tierra' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🌱', id: 'boton-tierra' }
+    { nombre: '🔥', id: 'boton-fuego' }
 )
 
 
@@ -73,16 +76,14 @@ function cargarjuego() {
 
     Mokepones.forEach((Mokepon) => {
         let cardmokepon = `
-        <div class="bg-black w-70 h-100 rounded-2xl shadow-2xl flex flex-col">
-        <label class='flex flex-1 flex-col' for=${Mokepon.nombre}>
-        <input type="radio" class="hidden" name="mokepones" id=${Mokepon.nombre} value=${Mokepon.nombre}/>
+        <label class='flex flex-1 flex-col bg-black rounded-2xl has-[input:checked]:bg-gray-500 transition-all duration-500' for=${Mokepon.nombre}>
+        <input type="radio" class="hidden peer" name="mokepones" id=${Mokepon.nombre} value=${Mokepon.nombre}/>
             <img src="${Mokepon.foto}"/>
             <h1 class="text-white text-center mt-10">${Mokepon.nombre}</h1>
             <h3 class='text-white m-4'>${Mokepon.descripcion}</h3>
             <p class="text-right pr-4 pb-4 mt-auto">${Mokepon.ataques.map(a => a.nombre).join(' ')}</p> 
 
             </label>
-        </div>
         `
         //El map lo que hace es un array temporal el cual filtra segun la condicion que le pongamos, el join separa con un espacio cada elemento
         
@@ -90,7 +91,6 @@ function cargarjuego() {
         opcionesmasc.innerHTML += cardmokepon
 
     })
-
         inputratigueya = document.getElementById('Ratigueya')
         inputcapipepo = document.getElementById('Capipepo')
         inputhipodoge = document.getElementById('Hipodoge')
@@ -104,12 +104,13 @@ function confirmarseleccion() {
     selecmascenemigo()
 
     if(inputratigueya.checked){
-        combate('ratigueya')
+        combate('Ratigueya')
     }else if(inputcapipepo.checked){
-        combate('capipepo')
+        combate('Capipepo')
     }else if(inputhipodoge.checked){
-        combate('hipodoge')
+        combate('Hipodoge')
     }
+
 }
 
 function combate(nombre){
@@ -129,26 +130,83 @@ function combate(nombre){
 
     divimagescombate.appendChild(imagenenemigo)
 
-    ataques.forEach(ataque =>{
-    let buttonsataque = `<button>${ataque.nombre}</button>`
+    cargarAtaques(nombre)
 
-    divbuttons.innerHTML += buttonsataque
+
+    ataquesB.forEach((ataque) =>{
+        let boton = `<button class="bg-amber-700 p-2 m-3 rounded-2xl Bataque" id=${ataque.id}>${ataque.nombre}</button>`
+        divbuttons.innerHTML += boton
+    })
+
+    agregareventobotones()
+
+
+}
+
+
+function enfrentamiento(ataqueJugador){
+    let ataqueEnemigo = aleatorio(0,ataquesBE.length-1)
+    console.log(ataquesBE[ataqueEnemigo].nombre)
+    console.log(ataqueJugador)
+
+    if(ataqueJugador == "agua" & ataquesBE[ataqueEnemigo].nombre == "🔥"){
+        console.log('ganaste')
+    }else if (ataqueJugador == "fuego" & ataquesBE[ataqueEnemigo].nombre == "🌱"){
+        console.log('ganaste')
+    }else if (ataqueJugador == "tierra" & ataquesBE[ataqueEnemigo].nombre == "💧"){
+        console.log('ganaste')
+    }else if(ataqueJugador == ataquesBE[ataqueEnemigo].nombre){
+        console.log('empate')
     }
+    else {
+        console.log('perdiste')
+    }
+}
 
-    )
 
+function agregareventobotones(){
+    botones = document.querySelectorAll('.Bataque')
+    console.log(botones)
+    botones.forEach(boton =>{
+        boton.addEventListener('click', (e)=>{
+        if(e.target.textContent == "🔥"){
+            boton.style.background = '#ffff'
+            boton.disabled = true;
+            enfrentamiento('fuego')
+        }else if(e.target.textContent == "💧"){
+            enfrentamiento('agua')
+            boton.style.background = '#ffff'
+            boton.disabled = true;
+        }else if(e.target.textContent == "🌱"){
+            enfrentamiento('tierra')
+            boton.style.background = '#ffff'
+            boton.disabled = true;
+        }
+        })
+    })
+}
 
-
+function cargarAtaques(mascotaJugador){
+    for(let i = 0; i<Mokepones.length; i++){
+        if(mascotaJugador == Mokepones[i].nombre){
+            ataquesB = Mokepones[i].ataques
+        }
+    }
+    for(let i = 0; i<Mokepones.length; i++){
+        if(mascenemigo == Mokepones[i].nombre){
+            ataquesBE = Mokepones[i].ataques
+        }
+    }
 }
 
 function selecmascenemigo(){
     let numero = aleatorio(1,3)
     if(numero==1){
-        mascenemigo = "ratigueya";
+        mascenemigo = "Ratigueya";
     }else if(numero==2){
-        mascenemigo = "hipodoge"
+        mascenemigo = "Hipodoge"
     }else {
-        mascenemigo = "capipepo"
+        mascenemigo = "Capipepo"
     }
 }
 
