@@ -10,6 +10,7 @@ let botones = []
 let historialjugador = 0
 let historialenemigo = 0 
 let empate=0
+let idjugador = null
 
 //Obtencion de los elementos (Getters)
 let confirmarmasc = document.getElementById('button-confirmar-masc')
@@ -101,14 +102,29 @@ function cargarjuego() {
         inputratigueya = document.getElementById('Ratigueya')
         inputcapipepo = document.getElementById('Capipepo')
         inputhipodoge = document.getElementById('Hipodoge')
+        obteneridjugador()
+}
 
+function obteneridjugador(){
+    fetch('http://localhost:8080/unirse') //Solicitamos la pagina, si queremos hacer un post u otra cosa, con una ',' seguida de un method
+        .then(function (res){ //Esperamos la respuesta
+            if(res.ok){ //Si todo esta bien
+                res.text() //Convertimos en texto
+                    
+                    .then(function (respuesta){ //Cuando la recibamos
+                        idjugador=respuesta
+                        console.log(respuesta) //La escribimos
+                    }
+                    )
+            }
+        } 
+        )
 }
 
 function confirmarseleccion() {
     sectioncombate.style.display='block'
     let sectionselec = document.getElementById('section-selec-masc')
     sectionselec.style.display = 'none'
-    selecmascenemigo()
 
     if(inputratigueya.checked){
         combate('Ratigueya')
@@ -121,6 +137,7 @@ function confirmarseleccion() {
 }
 
 function combate(nombre){
+    almacenarmascotajugador(nombre)
 
     let imagenjugador = document.createElement('img')
     imagenjugador.src = `/${nombre}.png`
@@ -146,8 +163,52 @@ function combate(nombre){
     })
 
     agregareventobotones()
+}
+
+function almacenarmascotajugador(nombremasc){
+    fetch(`http://localhost:8080/mokepon/${idjugador}`, 
+        {
+            method: "post",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nombre: nombremasc
+            })
+
+        })
+
+        buscarenemigo()
+}
+
+function buscarenemigo(){
+    fetch('http://localhost:8080/unirse') //Solicitamos la pagina, si queremos hacer un post u otra cosa, con una ',' seguida de un method
+        .then(function (res){ //Esperamos la respuesta
+            if(res.ok){ //Si todo esta bien
+                res.text() //Convertimos en texto
+                    
+                    .then(function (respuesta){ //Cuando la recibamos
+                        idjugador=respuesta
+                        console.log(respuesta) //La escribimos
+                    }
+                    )
+            }
+        } 
+        )
 
 
+    fetch(`http://localhost:8080/mokepon/${idjugador}`)
+        .then(function (res){
+            if(res.ok){
+                res.text()
+                .then(function (respuesta){
+                    mascenemigo=respuesta.enemigos
+                    if(mascenemigo=='nada'){
+                    selecmascenemigo()
+                    }
+                })
+            }
+        })
 }
 
 

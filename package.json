@@ -1,7 +1,20 @@
 {
   "name": "proud-proxima",
-  "type": "module",
   "version": "0.0.1",
+  "description": "Pagina web basada en el curso de Platzi",
+  "keywords": [],
+  "homepage": "https://github.com/SantinoG07/Mokepon#readme",
+  "bugs": {
+    "url": "https://github.com/SantinoG07/Mokepon/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SantinoG07/Mokepon.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -10,23 +23,12 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.16.6"
+    "astro": "^5.16.9",
+    "cors": "^2.8.5",
+    "express": "^5.2.1"
   },
-  "description": "Pagina web basada en el curso de Platzi",
-  "main": "index.js",
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18",
     "tailwindcss": "^4.1.18"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SantinoG07/Mokepon.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SantinoG07/Mokepon/issues"
-  },
-  "homepage": "https://github.com/SantinoG07/Mokepon#readme"
+  }
 }
